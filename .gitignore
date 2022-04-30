@@ -1,0 +1,11 @@
+*.json
+*.exe
+*.fpj
+*.layout
+*.o
+*.win
+*.dev
+*.cbp
+*.depend
+/bin
+/obj
