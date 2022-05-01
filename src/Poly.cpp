@@ -105,8 +105,9 @@ bool Poly::isZero() const{
 }
 
 double Poly::getCoef(const unsigned &I) const{
-    if(this->a == nullptr)  return 0.0;
-    return (this->getGrau()>=0 ? this->a[I]: 0.0);
+    //if(this->empty())  return 0.0;
+    //if(this->a == nullptr)  return 0.0;
+    return (I >= unsigned(this->getGrau() +1) ? 0.0: this->a[I]);
 }
 
 double Poly::getValor(const double &V) const{
@@ -177,8 +178,16 @@ std::istream &operator>>(std::istream &I, Poly &P){
                 std::cout << "X^" << i << ": ";
                 I >> V;
             }
-            P.setCoef(i, V);
+            P.a[i] = V;
         }
     }
     return I;
+}
+
+Poly Poly::operator+(const Poly &P) const{
+    Poly prov(std::max(this->getGrau(), P.getGrau()));
+    for(int i=0;i<prov.getGrau(); i++){
+        prov.a[i] = this->getCoef(i) + P.getCoef(i);
+    }
+    return prov;
 }
