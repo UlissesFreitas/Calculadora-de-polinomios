@@ -45,7 +45,7 @@ public:
     friend std::istream &operator>>(std::istream &I, Poly &P);
 
 // as operações algébricas básicas:
-    // soma e subtração e multiplicacao
+    // soma e subtracao e multiplicacao
     Poly operator+(const Poly &P) const;
     Poly operator-(const Poly &P) const;
     Poly operator*(const Poly &P) const;
