@@ -105,7 +105,7 @@ bool Poly::isZero() const{
 }
 
 double Poly::getCoef(const unsigned &I) const{
-    //if(this->empty())  return 0.0;
+    if(this->empty())  return 0.0;
     //if(this->a == nullptr)  return 0.0;
     return (I > unsigned(this->getGrau() ) ? 0.0: this->a[I]);
 }
