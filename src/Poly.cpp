@@ -107,7 +107,7 @@ bool Poly::isZero() const{
 double Poly::getCoef(const unsigned &I) const{
     //if(this->empty())  return 0.0;
     //if(this->a == nullptr)  return 0.0;
-    return (I >= unsigned(this->getGrau() +1) ? 0.0: this->a[I]);
+    return (I > unsigned(this->getGrau() ) ? 0.0: this->a[I]);
 }
 
 double Poly::getValor(const double &V) const{
@@ -123,7 +123,7 @@ double Poly::getValor(const double &V) const{
 // metodo de alteracao
 void Poly::setCoef(const unsigned &I, const double &V){
     if(int(I) > this->getGrau() || this->getGrau() == -1){
-        std::cerr << "erro! grau nao existente ou polinomio vazio";
+        std::cerr << "erro! grau nao existente ou polinomio vazio" << std::endl;
     }else if ( (int(I) == this->getGrau()) && (this->getGrau() != 0)) {
         this->a[I] = 1.0;
     }else {
@@ -169,7 +169,7 @@ std::ostream &operator<<(std::ostream &O, const Poly &P){
 std::istream &operator>>(std::istream &I, Poly &P){
     double V = 0.0;
     if(P.empty()){
-        std::cerr <<"Erro polinomio vazio";
+        std::cerr <<"Erro polinomio vazio" << std::endl;
     }else {
         for( int i =P.getGrau(); i>=0; i--){
             std::cout << "X^" << i << ": ";
@@ -186,8 +186,15 @@ std::istream &operator>>(std::istream &I, Poly &P){
 
 Poly Poly::operator+(const Poly &P) const{
     Poly prov(std::max(this->getGrau(), P.getGrau()));
-    for(int i=0;i<prov.getGrau(); i++){
+    for(int i=0;i<=prov.getGrau(); i++){
         prov.a[i] = this->getCoef(i) + P.getCoef(i);
+    }
+    return prov;
+}
+Poly Poly::operator-(const Poly &P) const{
+    Poly prov(std::max(this->getGrau(), P.getGrau()));
+    for(int i=0;i<prov.getGrau(); i++){
+        prov.a[i] = this->getCoef(i) - P.getCoef(i);
     }
     return prov;
 }

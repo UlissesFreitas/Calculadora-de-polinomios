@@ -8,14 +8,16 @@ using namespace std;
 */
 int main(int argc, char** argv) {
 
-	Poly P, P1(2), P2(3), P3(4);
+	Poly P, P1(2), P2(3), P3(4), P4(5),P6, P0(0);
     cin >> P1;
     cin >> P2;
     P3 = P1 + P2;
+    P4 = P1 - P2;
+   // P6 = P1 + P2;
     cout << "P1: " << P1 << endl;
     cout << "P2: " << P2 << endl;
     cout << "P3: " << P3 << endl;
-
+    cout << "P4: " << P4 << endl;
     cout << "===========" << endl;
     cout << "P3Grau: " << P3.getGrau() << endl;
     cout << "P3Coef0: " << P3.getCoef(0) << endl;
