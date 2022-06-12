@@ -1,40 +1,140 @@
 #include <iostream>
+#include <string>
+
 #include "Poly.h"
 
 using namespace std;
-/*
-    ERRO AO IMPRIMIR
-    NÃO EXIBE O NUMERO DE MAIOR GRAU
-*/
-int main(int argc, char** argv) {
 
-	Poly P, P1(2), P2(3), P3(4), P4(5),P6, P0(0);
-    cin >> P1;
-    cin >> P2;
-    P3 = P1 + P2;
-    P4 = P1 - P2;
-   // P6 = P1 + P2;
-    cout << "P1: " << P1 << endl;
-    cout << "P2: " << P2 << endl;
-    cout << "P3: " << P3 << endl;
-    cout << "P4: " << P4 << endl;
-    cout << "===========" << endl;
-    cout << "P3Grau: " << P3.getGrau() << endl;
-    cout << "P3Coef0: " << P3.getCoef(0) << endl;
-    cout << "P3Coef1: " << P3.getCoef(1) << endl;
-    cout << "P3Coef2: " << P3.getCoef(2) << endl;
-    cout << "P3Coef3: " << P3.getCoef(3) << endl;
-    cout << "===========" << endl;
-    cout << "P1Grau: " << P1.getGrau() << endl;
-    cout << "P1Coef0: " << P1.getCoef(0) << endl;
-    cout << "P1Coef1: " << P1.getCoef(1) << endl;
-    cout << "P1Coef2: " << P1.getCoef(2) << endl;
-    cout << "P1Coef3: " << P1.getCoef(3) << endl;
-    cout << "===========" << endl;
-    cout << "P2Grau: " << P2.getGrau() << endl;
-    cout << "P2Coef0: " << P2.getCoef(0) << endl;
-    cout << "P2Coef1: " << P2.getCoef(1) << endl;
-    cout << "P2Coef2: " << P2.getCoef(2) << endl;
-    cout << "P2Coef3: " << P2.getCoef(3) << endl;
-	return 0;
+/// Funcao auxiliar para imprimir informacao
+/// sobre o grau do polinomio
+string printGrau(const Poly& P)
+{
+  string prov;
+
+  if (!P.empty()) prov=" ";
+  prov += '[';
+  if (P.empty()) prov += "Vazio";
+  else if (P.isZero()) prov += "Nulo";
+  else
+  {
+    prov += "Grau ";
+    prov += to_string(P.getGrau());
+  }
+  prov += ']';
+  return prov;
+}
+
+int main(void)
+{
+  Poly P1;
+  Poly P2(0);
+  Poly Result(1);
+  double x;
+  unsigned grau;
+  char opcao;
+
+  cout << "CALCULADORA DE POLINOMIOS\n";
+  // Leh os valores da execucao anterior
+  // Se nao existirem os arquivos, nao faz nada
+  P1.ler("poly_P1.txt");
+  P2.ler("poly_P2.txt");
+  Result.ler("poly_result.txt");
+  do
+  {
+    // Solicita a opcao
+    do
+    {
+      cout << endl;
+
+      cout << "P1:     " << P1 << printGrau(P1) << endl;
+      cout << "P2:     " << P2 << printGrau(P2) << endl;
+      cout << "Result: " << Result << printGrau(Result) << endl;
+
+      cout << "Digite sua opcao:\n";
+      cout << "< - Entrar um novo polinomio\n";
+      cout << "+ - Somar os polinomios\n";
+      cout << "- - Subtrair os polinomios\n";
+      cout << "* - Multiplicar os polinomios\n";
+      // Opcionais
+      //cout << "/ - Dividir os polinomios (retornar quociente)\n";
+      //cout << "% - Dividir os polinomios (retornar resto)\n";
+      cout << "x - Calcular o ultimo polinomio (Result) para um valor de x\n";
+      cout << "i - Inverter o sinal do ultimo polinomio (Result)\n";
+      cout << "t - Trocar os polinomios (P1->P2 P2->Result Result->P1)\n";
+      cout << "q - Terminar\n";
+      cin >> opcao;
+      opcao = tolower(opcao);
+    }
+    while (opcao!='<' && opcao!='+' && opcao!='-' && opcao!='*' &&
+           //opcao!='/' && opcao!='%' &&
+           opcao!='x' && opcao!='i' && opcao!='t' && opcao!='q');
+
+    // Rotaciona os polinomios no buffer
+    if (opcao!='i' && opcao!='q') // Nao rotaciona nada se for i,q
+    {
+      if (opcao=='t') // Rotaciona no sentido inverso
+      {
+        Poly prov(Result);
+        Result = P2;
+        P2 = P1;
+        P1 = prov;
+      }
+      else // Todas as opcoes menos i,t,q: rotaciona normalmente
+      {
+        P1 = P2;
+        P2 = Result;
+        // Novo resultado entra em result
+      }
+    }
+
+    // Executa a opcao escolhida
+    switch(opcao)
+    {
+    case '<':
+      cout << "Grau do polinomio: "  ;
+      cin >> grau;
+      Result.recriar(grau);
+      cout << "Coeficientes do polinomio:\n";
+      cin >> Result;
+      break;
+    case '+':
+      Result = P1+P2;
+      break;
+    case '-':
+      Result = P1-P2;
+      break;
+    case '*':
+      Result = P1*P2;
+      break;
+    // Opcionais
+    /*
+    case '/':
+      Result = P1/P2;
+      break;
+    case '%':
+      Result = P1%P2;
+      break;
+    */
+    case 'x':
+      cout << "Valor de x: ";
+      cin >> x;
+      Result.recriar(0);
+      Result.setCoef(0,P2(x));
+      break;
+    case 'i':
+      Result = -Result;
+      break;
+    case 't':
+    case 'q':
+      break;
+    default:
+      cerr << "Opcao desconhecida\n";
+      Result=Poly();
+      break;
+    }
+    P1.salvar("poly_P1.txt");
+    P2.salvar("poly_P2.txt");
+    Result.salvar("poly_result.txt");
+  }
+  while (opcao != 'q');
 }
