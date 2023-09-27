@@ -58,7 +58,7 @@ int main(void)
       // Opcionais
       //cout << "/ - Dividir os polinomios (retornar quociente)\n";
       //cout << "% - Dividir os polinomios (retornar resto)\n";
-      cout << "x - Calcular o ultimo polinomio (Result) para um valor de x\n";
+      //cout << "x - Calcular o ultimo polinomio (Result) para um valor de x\n";
       cout << "i - Inverter o sinal do ultimo polinomio (Result)\n";
       cout << "t - Trocar os polinomios (P1->P2 P2->Result Result->P1)\n";
       cout << "q - Terminar\n";
@@ -114,13 +114,14 @@ int main(void)
     case '%':
       Result = P1%P2;
       break;
-    */
+    
     case 'x':
       cout << "Valor de x: ";
       cin >> x;
       Result.recriar(0);
       Result.setCoef(0,P2(x));
       break;
+      */
     case 'i':
       Result = -Result;
       break;
